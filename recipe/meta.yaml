@@ -1,18 +1,18 @@
 {% set name = "azure-mgmt-imagebuilder" %}
-{% set version = "1.3.0" %}
+{% set version = "2.0.0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 3f325d688b6125c2fa92681e5b18ea407ba032d5be3f7c0724406d733e6c14ef
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace("-", "_") }}-{{ version }}.tar.gz
+  sha256: e2b12dcd024cd55edf231a9ebc2645afc466a3b2e6cc8779fa161956fb86875f
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<37]
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -23,10 +23,11 @@ requirements:
   run:
     - python
     - isodate >=0.6.1,<1.0.0
-    - azure-common >=1.1,<2
-    - azure-mgmt-core >=1.3.2,<2.0.0
-    - typing-extensions >=4.3.0 # [py<38]
+    - azure-mgmt-core >=1.6.0
+    - typing-extensions >=4.6.0
 
+# Azure sdk test tools are not supported by pypi and Anaconda.
+# Only pip check is performed.
 test:
   imports:
     - azure.mgmt.imagebuilder
